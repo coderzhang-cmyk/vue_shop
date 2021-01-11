@@ -15,4 +15,7 @@ export default {
 
 <style lang="less" scoped>
 @import url('assets/css/base');
+#app {
+  height: 100vh;
+}
 </style>

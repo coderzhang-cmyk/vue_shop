@@ -1,18 +1,21 @@
 import axios from 'axios'
 
+
+
 export function request1(config) {
   const example = axios.create({
-    baseURL: 'http://timemeetyou.com:8889/api',
+    baseURL: 'http://timemeetyou.com:8889/api/private/v1',
     timeout: 5000
   })
   example.interceptors.request.use(config => {
+    config.headers.Authorization = sessionStorage.getItem('token')
     return config
-  },error => {
+  }, error => {
     console.log(error);
   })
   example.interceptors.response.use(res => {
     return res.data
-  },error => {
+  }, error => {
     console.log(error);
   })
 
