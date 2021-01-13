@@ -5,7 +5,7 @@ import 'hungry'
 import 'assets/font/iconfont.css'
 
 Vue.config.productionTip = false
-
+Vue.prototype.$bus = new Vue()
 
 new Vue({
   router,

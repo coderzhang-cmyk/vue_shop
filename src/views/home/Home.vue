@@ -21,6 +21,7 @@
           :collapse="isFolid"
           :collapse-transition="false"
           router
+          :default-active="activePath"
         >
           <el-submenu
             :index="String(item.id)"
@@ -32,9 +33,10 @@
               <span>{{ item.authName }}</span>
             </template>
             <el-menu-item
-              :index="iten.path"
+              :index="`/${iten.path}`"
               v-for="(iten, indey) in item.children"
               :key="iten.id"
+              @click="handleSkipPage(`/${iten.path}`)"
             >
               <template slot="title">
                 <i class="el-icon-menu"></i>
@@ -66,15 +68,18 @@ export default {
         "iconfont icon-data",
       ],
       isFolid: false,
+      activePath: "",
     };
   },
   created() {
     this.getMenus();
+    this.activePath = sessionStorage.getItem("activePath")
+      ? sessionStorage.getItem("activePath")
+      : "/users";
   },
   methods: {
     getMenus() {
       getMenus().then((res) => {
-        console.log(res.data);
         res.meta.status === 200
           ? (this.menuList = res.data)
           : this.$message.error(res.meta.msg);
@@ -87,6 +92,10 @@ export default {
     },
     handleAsideFolid() {
       this.isFolid = !this.isFolid;
+    },
+    handleSkipPage(path) {
+      sessionStorage.setItem("activePath", path);
+      this.activePath = path;
     },
   },
 };

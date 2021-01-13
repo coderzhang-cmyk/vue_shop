@@ -1,4 +1,4 @@
-import {request1} from './request'
+import { request1 } from './request'
 
 
 export function getMenus() {
@@ -6,3 +6,4 @@ export function getMenus() {
     url: 'menus'
   })
 }
+

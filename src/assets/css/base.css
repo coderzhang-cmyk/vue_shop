@@ -1,4 +1,5 @@
 @import './normalize.css';
+@import './elem.css';
 /*:root -> 获取根元素html,定义变量*/
 
 *,
