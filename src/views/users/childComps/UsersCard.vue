@@ -58,6 +58,7 @@
               type="warning"
               icon="el-icon-setting"
               size="mini"
+              @click="handleUserAssignRole(scope.row)"
             ></el-button>
           </el-tooltip>
         </template>
@@ -74,17 +75,26 @@
     </el-pagination>
 
     <!-- 添加用户区域与修改用户信息区域 -->
-    <user-dialog
+    <Dialog
       @handleClose="handleClose"
       :dialog-visible="dialogVisible"
       :sonUserInfo="sonUserInfo"
+    />
+    <!-- 分配角色区域 -->
+    <user-assign-role
+      :assign-role-visible="assignRoleVisible"
+      @handleAssignRoleClose="handleAssignRoleClose"
+      :user-assign-role-info="userAssignRoleInfo"
     />
   </el-card>
 </template>
 
 <script>
-import UserDialog from "components/content/userDialog/UserDialog";
+import Dialog from "components/content/dialog/Dialog";
 
+import UserAssignRole from "./childComps/UserAssignRole";
+
+import { message } from "common/elem";
 export default {
   data() {
     return {
@@ -95,6 +105,8 @@ export default {
         title: "",
         information: {},
       },
+      assignRoleVisible: false,
+      userAssignRoleInfo: {}
     };
   },
   props: {
@@ -135,28 +147,25 @@ export default {
       this.dialogVisible = true;
 
       (this.sonUserInfo.genre = "edit"), (this.sonUserInfo.title = "修改用户");
-      console.log(row);
       this.sonUserInfo.information = row;
     },
     handleDeleteUser(id) {
-      this.$confirm("此操作将永久删除该用户, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(() => {
-          this.$bus.$emit('handleDeleteUser',id)
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除",
-          });
-        });
+      message(this, "此操作将永久删除该用户, 是否继续?", () => {
+        this.$bus.$emit("handleDeleteUser", id);
+      });
     },
+    handleUserAssignRole(row) {
+      this.userAssignRoleInfo = row
+      this.$emit('handleUserAssignRole')
+      this.assignRoleVisible = true;
+    },
+    handleAssignRoleClose() {
+      this.assignRoleVisible = false
+    }
   },
   components: {
-    UserDialog,
+    Dialog,
+    UserAssignRole,
   },
 };
 </script>

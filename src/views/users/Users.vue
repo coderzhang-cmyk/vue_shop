@@ -9,6 +9,7 @@
       @handleSizeChange="handleSizeChange"
       @handleCurrentChange="handleCurrentChange"
       @handleSwitchChange="handleSwitchChange"
+      @handleUserAssignRole="handleUserAssignRole"
     />
   </section>
 </template>
@@ -24,11 +25,13 @@ import {
   addUser,
   editUser,
   deleteUser,
+  getRoles,
+  assignRoles
 } from "network/users";
 export default {
   data() {
     return {
-      textList: ["首页", "用户管理", "用户列表"],
+      textList: ["用户管理", "用户列表"],
       userInfo: {
         query: "",
         pagenum: 1,
@@ -55,6 +58,9 @@ export default {
     this.$bus.$on("handleDeleteUser", (id) => {
       this.deleteUser(id);
     });
+    this.$bus.$on('handleAssignRole',(id,data) => {
+      this.assignRoles(id,data)
+    })
   },
   methods: {
     getUsers(pagenum, pagesize, query) {
@@ -90,6 +96,18 @@ export default {
         this.handleGetUser();
       });
     },
+    getRoles() {
+      getRoles().then((res) => {
+        if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
+        this.$bus.$emit("getRoles",res.data);
+      });
+    },
+    assignRoles(id,data){
+      assignRoles(id,data).then(res => {
+           this.handleSwitchType(res, 200);
+           this.handleGetUser();
+      })
+    },
     handleSwitchType(res, status) {
       let type = res.meta.status === status ? "success" : "error";
       this.$message({
@@ -118,6 +136,9 @@ export default {
     },
     handleSwitchChange(row) {
       this.modifyUsersState(row.id, row.mg_state);
+    },
+    handleUserAssignRole() {
+      this.getRoles();
     },
   },
   components: {

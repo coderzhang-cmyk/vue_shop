@@ -40,3 +40,17 @@ export function deleteUser(user_id) {
     method: 'delete'
   })
 }
+
+export function getRoles() {
+  return request1({
+    url: 'roles'
+  })
+}
+
+export function assignRoles(user_id,data) {
+  return request1({
+    url: `users/${user_id}/role`,
+    method: 'put',
+    data
+  })
+}
