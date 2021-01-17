@@ -27,7 +27,8 @@ import {
   MessageBox,
   Tag,
   Tree,
-  Option
+  Option,
+  Cascader
 } from 'element-ui';
 
 
@@ -57,6 +58,7 @@ Vue.use(Dialog)
 Vue.use(Tag)
 Vue.use(Tree)
 Vue.use(Option)
+Vue.use(Cascader)
 
 
 Vue.prototype.$message = Message
