@@ -10,6 +10,8 @@ import Breadcrumb from "components/content/breadcrumb/Breadcrumb";
 
 import CategoriesCard from "./childComps/CategoriesCard";
 
+import { getCateData } from "common/mixin";
+
 import {
   getCategories,
   addCategorie,
@@ -20,12 +22,6 @@ export default {
   data() {
     return {
       textList: ["商品管理", "商品分类"],
-      params: {
-        type: 3,
-        pagenum: 1,
-        pagesize: 2,
-      },
-      cateList: [],
       total: 0,
     };
   },
@@ -40,6 +36,7 @@ export default {
       this.$bus.$emit("total", val);
     },
   },
+  mixins: [getCateData],
   created() {
     this.getCategories(this.params);
   },
@@ -63,21 +60,6 @@ export default {
     });
   },
   methods: {
-    getCategories(params) {
-      getCategories(params).then((res) => {
-        if (res.meta.status !== 200) {
-          return this.$message.error(res.meta.msg);
-        }
-
-        if (params.type === 3) {
-          this.cateList = res.data.result;
-        } else {
-          this.secondLevelCateList = res.data;
-          this.$bus.$emit("secondLevelCateList", this.secondLevelCateList);
-        }
-        this.total = res.data.total;
-      });
-    },
     addCategorie(data) {
       addCategorie(data).then((res) => {
         this.handleGetCartegories(res, 201);

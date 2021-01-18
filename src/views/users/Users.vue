@@ -19,6 +19,8 @@ import Breadcrumb from "components/content/breadcrumb/Breadcrumb";
 
 import UsersCard from "./childComps/UsersCard";
 
+import { switchType } from "common/mixin";
+
 import {
   getUsers,
   modifyUsersState,
@@ -26,7 +28,7 @@ import {
   editUser,
   deleteUser,
   getRoles,
-  assignRoles
+  assignRoles,
 } from "network/users";
 export default {
   data() {
@@ -41,6 +43,7 @@ export default {
       },
     };
   },
+  mixins: [switchType],
   created() {
     this.getUsers(
       this.userInfo.pagenum,
@@ -58,9 +61,9 @@ export default {
     this.$bus.$on("handleDeleteUser", (id) => {
       this.deleteUser(id);
     });
-    this.$bus.$on('handleAssignRole',(id,data) => {
-      this.assignRoles(id,data)
-    })
+    this.$bus.$on("handleAssignRole", (id, data) => {
+      this.assignRoles(id, data);
+    });
   },
   methods: {
     getUsers(pagenum, pagesize, query) {
@@ -99,20 +102,13 @@ export default {
     getRoles() {
       getRoles().then((res) => {
         if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
-        this.$bus.$emit("getRoles",res.data);
+        this.$bus.$emit("getRoles", res.data);
       });
     },
-    assignRoles(id,data){
-      assignRoles(id,data).then(res => {
-           this.handleSwitchType(res, 200);
-           this.handleGetUser();
-      })
-    },
-    handleSwitchType(res, status) {
-      let type = res.meta.status === status ? "success" : "error";
-      this.$message({
-        message: res.meta.msg,
-        type,
+    assignRoles(id, data) {
+      assignRoles(id, data).then((res) => {
+        this.handleSwitchType(res, 200);
+        this.handleGetUser();
       });
     },
     handleGetUser() {
