@@ -35,6 +35,8 @@ export const getCateData = {
   },
 }
 
+
+
 export const switchType = {
   methods: {
     handleSwitchType(res, status) {
@@ -44,5 +46,13 @@ export const switchType = {
         type,
       });
     },
+  },
+}
+
+import Breadcrumb from "components/content/breadcrumb/Breadcrumb";
+
+export const crumbs = {
+  components: {
+    Breadcrumb
   },
 }

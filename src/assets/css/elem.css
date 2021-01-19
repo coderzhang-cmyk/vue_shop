@@ -12,3 +12,15 @@
 .el-cascader-menu{
   height: 182px !important;
 }
+.el-steps  {
+  margin: 15px 0;
+}
+.el-step__title {
+  font-size: 12px !important;
+}
+.el-checkbox {
+  margin: 0 15px 0 0 !important;
+}
+.ql-editor {
+  min-height: 300px;
+}

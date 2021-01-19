@@ -8,6 +8,7 @@ const Users = () => import('views/users/Users')
 const Roles = () => import('views/roles/Roles')
 const Rights = () => import('views/rights/Rights')
 const Goods = () => import('views/goods/Goods')
+const GoodsAdd = () => import('views/goods/childComps/childComps/GoodsAdd')
 const Params = () => import('views/params/Params')
 const Categories = () => import('views/categories/Categories')
 const Orders = () => import('views/orders/Orders')
@@ -48,7 +49,13 @@ const router = new VueRouter({
         },
         {
           path: '/goods',
-          component: Goods
+          component: Goods,
+          children: [
+            {
+              path: 'add',
+              component: GoodsAdd
+            }
+          ]
         },
         {
           path: '/params',
