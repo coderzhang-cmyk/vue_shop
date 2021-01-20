@@ -1,21 +1,12 @@
 <template>
   <el-card class="box-card">
-    <el-row :gutter="20">
-      <el-col :span="8">
-        <el-input placeholder="请输入内容" v-model="searchContent" clearable>
-          <el-button
-            slot="append"
-            icon="el-icon-search"
-            @click="handleSearchUser"
-          ></el-button
-        ></el-input>
-      </el-col>
-      <el-col :span="5">
-        <el-button type="primary" class="add" @click="handleAddUser"
-          >添加用户</el-button
-        ></el-col
-      >
-    </el-row>
+    <search
+      @handleSearch="handleSearch"
+      @handleClickButton="handleClickButton"
+      @handleInputContent="handleInputContent"
+      :type="['input', 'button']"
+      btn-text="添加用户"
+    />
     <el-table :data="userInfo.userList" style="width: 100%" stripe border>
       <el-table-column label="#" type="index" width="50"> </el-table-column>
       <el-table-column label="姓名" prop="username"> </el-table-column>
@@ -91,6 +82,7 @@
 
 <script>
 import Dialog from "components/content/dialog/Dialog";
+import Search from "components/content/search/Search";
 
 import UserAssignRole from "./childComps/UserAssignRole";
 
@@ -106,7 +98,7 @@ export default {
         information: {},
       },
       assignRoleVisible: false,
-      userAssignRoleInfo: {}
+      userAssignRoleInfo: {},
     };
   },
   props: {
@@ -117,13 +109,8 @@ export default {
       },
     },
   },
-  watch: {
-    searchContent(val) {
-      this.$emit("handleSearchUser", val);
-    },
-  },
   methods: {
-    handleSearchUser() {
+    handleSearch() {
       this.$emit("handleSearchUser", this.searchContent);
     },
     handleSizeChange(val) {
@@ -135,7 +122,7 @@ export default {
     handleSwitchChange(row) {
       this.$emit("handleSwitchChange", row);
     },
-    handleAddUser() {
+    handleClickButton() {
       this.dialogVisible = true;
       (this.sonUserInfo.genre = "add"), (this.sonUserInfo.title = "添加用户");
     },
@@ -155,16 +142,21 @@ export default {
       });
     },
     handleUserAssignRole(row) {
-      this.userAssignRoleInfo = row
-      this.$emit('handleUserAssignRole')
+      this.userAssignRoleInfo = row;
+      this.$emit("handleUserAssignRole");
       this.assignRoleVisible = true;
     },
     handleAssignRoleClose() {
-      this.assignRoleVisible = false
-    }
+      this.assignRoleVisible = false;
+    },
+    handleInputContent(val) {
+      this.searchContent = val;
+      this.$emit("handleSearchUser", val);
+    },
   },
   components: {
     Dialog,
+    Search,
     UserAssignRole,
   },
 };

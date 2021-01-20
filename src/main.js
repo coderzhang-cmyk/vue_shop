@@ -19,6 +19,23 @@ Vue.use(VueQuillEditor)
 Vue.config.productionTip = false
 Vue.prototype.$bus = new Vue()
 
+Vue.filter('formatDate', (val) => {
+  const date = new Date(val);
+  const y = date.getFullYear();
+  const m =
+    date.getMonth() + 1 > 10
+      ? date.getMonth() + 1
+      : `0${date.getMonth() + 1}`;
+  const d = date.getDate() > 10 ? date.getDate() : `0${date.getDate()}`;
+  const h = date.getHours() > 10 ? date.getHours() : `0${date.getHours()}`;
+  const b =
+    date.getMinutes() > 10 ? date.getMinutes() : `0${date.getMinutes()}`;
+  const s =
+    date.getSeconds() > 10 ? date.getSeconds() : `0${date.getSeconds()}`;
+  return `${y}-${m}-${d} ${h}:${b}:${s}`;
+
+})
+
 new Vue({
   router,
   render: h => h(App),

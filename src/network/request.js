@@ -4,7 +4,7 @@ import axios from 'axios'
 
 export function request1(config) {
   const example = axios.create({
-    baseURL: 'http://timemeetyou.com:8889/api/private/v1/',
+    baseURL: 'https://www.liulongbin.top:8888/api/private/v1',
     timeout: 5000
   })
   example.interceptors.request.use(config => {

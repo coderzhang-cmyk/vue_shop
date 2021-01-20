@@ -2,7 +2,7 @@
   <section id="goods">
     <!-- 面包屑区域 -->
     <breadcrumb :text-list="textList" />
-    <goods-dialog
+    <goods-card
       :good-list="goodList"
       :total="total"
       :params="params"
@@ -24,7 +24,7 @@
 <script>
 import { crumbs, switchType } from "common/mixin";
 
-import GoodsDialog from "./childComps/GoodsDialog";
+import GoodsCard from "./childComps/GoodsCard";
 
 import { getAttribute } from "network/categories";
 import { getGoods, deleteGoods, addGoods } from "network/goods";
@@ -105,6 +105,7 @@ export default {
       this.getGoods(this.params);
     },
     getAllGoods() {
+      this.params.query = "";
       this.getGoods(this.params);
     },
     handleDeleteGoods(goodsId) {
@@ -122,7 +123,7 @@ export default {
     },
   },
   components: {
-    GoodsDialog,
+    GoodsCard,
   },
 };
 </script>

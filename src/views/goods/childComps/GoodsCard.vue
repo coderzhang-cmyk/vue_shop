@@ -1,24 +1,12 @@
 <template>
   <el-card>
-    <el-row :gutter="20">
-      <el-col :span="8">
-        <el-input
-          placeholder="请输入内容"
-          v-model="inputContent"
-          clearable
-          class="input-with-select"
-        >
-          <el-button
-            slot="append"
-            icon="el-icon-search"
-            @click="handleSearchGood"
-          ></el-button>
-        </el-input>
-      </el-col>
-      <el-col :span="4">
-        <el-button type="primary" @click="handleSkipGoodsAdd">添加商品</el-button>
-      </el-col>
-    </el-row>
+    <search
+      @handleSearch="handleSearch"
+      @handleClickButton="handleClickButton"
+      @handleInputContent="handleInputContent"
+      :type="['input', 'button']"
+      btn-text="添加商品"
+    />
 
     <!-- table表格区域 -->
     <el-table :data="goodList" stripe border>
@@ -61,6 +49,8 @@
 
 <script>
 import { message } from "common/elem";
+
+import Search from "components/content/search/Search";
 export default {
   data() {
     return {
@@ -85,29 +75,6 @@ export default {
       },
     },
   },
-  filters: {
-    formatDate(val) {
-      const date = new Date(val);
-      const y = date.getFullYear();
-      const m =
-        date.getMonth() + 1 > 10
-          ? date.getMonth() + 1
-          : `0${date.getMonth() + 1}`;
-      const d = date.getDate() > 10 ? date.getDate() : `0${date.getDate()}`;
-      const h = date.getHours() > 10 ? date.getHours() : `0${date.getHours()}`;
-      const b =
-        date.getMinutes() > 10 ? date.getMinutes() : `0${date.getMinutes()}`;
-      const s =
-        date.getSeconds() > 10 ? date.getSeconds() : `0${date.getSeconds()}`;
-      return `${y}-${m}-${d} ${h}:${b}:${s}`;
-    },
-  },
-  watch: {
-    inputContent(val) {
-      console.log(!val);
-      !val ? this.$emit("getAllGoods") : "";
-    },
-  },
   methods: {
     handleSizeChange(size) {
       this.$emit("handleSizeChange", size);
@@ -115,19 +82,26 @@ export default {
     handleCurrentChange(page) {
       this.$emit("handleCurrentChange", page);
     },
-    handleSearchGood() {
+    handleSearch() {
       this.inputContent.trim().length !== 0
         ? this.$emit("handleSearchGood", this.inputContent)
         : "";
     },
     handleDeleteGoods(row) {
       message(this, "此操作将永久删除该商品, 是否继续", () => {
-        this.$emit("handleDeleteGoods",row.goods_id);
+        this.$emit("handleDeleteGoods", row.goods_id);
       });
     },
-    handleSkipGoodsAdd() {
-      this.$router.push('/goods/add')
-    }
+    handleClickButton() {
+      this.$router.push("/goods/add");
+    },
+    handleInputContent(val) {
+      this.inputContent = val;
+      !val ? this.$emit("getAllGoods") : "";
+    },
+  },
+  components: {
+    Search,
   },
 };
 </script>
